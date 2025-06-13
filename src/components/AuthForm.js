@@ -1,6 +1,4 @@
-"use client"
-
-import { useState } from "react"
+import { useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -9,15 +7,68 @@ import {
   Typography,
   Stack,
   Divider,
-  Box
-} from "@mui/material"
+  Box,
+  CircularProgress,
+} from "@mui/material";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/authSlice/authSlice.js";
+import { auth } from "../utils/firebase.js";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile
+} from "firebase/auth";
+import { toast } from "react-toastify";
 
 export default function AuthForm() {
-  const [isLogin, setIsLogin] = useState(true)
+  const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
-  const toggleAuthMode = () => {
-    setIsLogin(!isLogin)
-  }
+  const nameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+
+  const toggleAuthMode = () => setIsLogin(!isLogin);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    setLoading(true);
+
+    try {
+      if (isLogin) {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        dispatch(setUser({ displayName: user.displayName, email: user.email }));
+        toast.success(`Welcome back, ${user.displayName || "user"}!`);
+      } else {
+        const displayName = nameRef.current.value;
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName });
+        dispatch(setUser({ displayName, email }));
+        toast.success("Account created successfully!");
+      }
+    } catch (error) {
+      console.error("Authentication Error:", error.message);
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("This email is already registered.");
+      } else if (error.code === "auth/invalid-email") {
+        toast.error("Invalid email format.");
+      } else if (error.code === "auth/weak-password") {
+        toast.error("Password should be at least 6 characters.");
+      } else if (error.code === "auth/user-not-found") {
+        toast.error("No user found with this email.");
+      } else if (error.code === "auth/wrong-password") {
+        toast.error("Incorrect password.");
+      } else {
+        toast.error(error.message || "Something went wrong.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Card
@@ -56,11 +107,12 @@ export default function AuthForm() {
           </Typography>
         </Box>
 
-        <Box sx={{ px: 4, pb: 4 }}>
+        <Box sx={{ px: 4, pb: 4 }} component="form" onSubmit={handleSubmit}>
           <Stack spacing={3}>
             {!isLogin && (
               <TextField
                 fullWidth
+                inputRef={nameRef}
                 label="Full Name"
                 variant="outlined"
                 required
@@ -80,6 +132,7 @@ export default function AuthForm() {
             )}
             <TextField
               fullWidth
+              inputRef={emailRef}
               label="Email address"
               variant="outlined"
               required
@@ -99,6 +152,7 @@ export default function AuthForm() {
             />
             <TextField
               fullWidth
+              inputRef={passwordRef}
               label="Password"
               variant="outlined"
               required
@@ -117,9 +171,11 @@ export default function AuthForm() {
               }}
             />
             <Button
+              type="submit"
               fullWidth
               variant="contained"
               size="large"
+              disabled={loading}
               sx={{
                 py: 1.5,
                 borderRadius: "12px",
@@ -134,7 +190,9 @@ export default function AuthForm() {
                 transition: "all 0.2s ease",
               }}
             >
-              {isLogin ? "Sign in" : "Create account"}
+              {loading ? (
+                <CircularProgress size={24} sx={{ color: "white" }} />
+              ) : isLogin ? "Sign in" : "Create account"}
             </Button>
           </Stack>
 
@@ -182,5 +240,5 @@ export default function AuthForm() {
         </Box>
       </CardContent>
     </Card>
-  )
+  );
 }

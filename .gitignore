@@ -14,3 +14,19 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+.env
+
+
+# Firebase emulator export data
+firebase-debug.log
+firebase-export.json
+firebase.json.tmp
+
+# Firebase Functions build output
+functions/lib/
+functions/node_modules/
+
+# Local-only override file
+.firebaserc.local
