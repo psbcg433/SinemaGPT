@@ -12,13 +12,15 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/authSlice/authSlice.js";
-import { auth } from "../utils/firebase.js";
+import { auth, googleAuthProvider } from "../utils/firebase.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile
+  updateProfile,
+  signInWithPopup,
 } from "firebase/auth";
 import { toast } from "react-toastify";
+import GoogleIcon from "@mui/icons-material/Google";
 
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
@@ -70,6 +72,21 @@ export default function AuthForm() {
     }
   };
 
+  const handleGoogleAuth = async () => {
+    setLoading(true);
+    try {
+      const result = await signInWithPopup(auth, googleAuthProvider);
+      const user = result.user;
+      dispatch(setUser({ displayName: user.displayName, email: user.email }));
+      toast.success(`Welcome, ${user.displayName || "user"}!`);
+    } catch (error) {
+      console.error("Google Sign-In Error:", error.message);
+      toast.error("Google sign-in failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Card
       sx={{
@@ -97,11 +114,7 @@ export default function AuthForm() {
           </Typography>
           <Typography
             variant="body1"
-            sx={{
-              textAlign: "center",
-              color: "#6b7280",
-              mb: 3,
-            }}
+            sx={{ textAlign: "center", color: "#6b7280", mb: 3 }}
           >
             {isLogin ? "Sign in to your account" : "Create your account in seconds"}
           </Typography>
@@ -120,12 +133,8 @@ export default function AuthForm() {
                   "& .MuiOutlinedInput-root": {
                     borderRadius: "12px",
                     backgroundColor: "#f9fafb",
-                    "&:hover": {
-                      backgroundColor: "#f3f4f6",
-                    },
-                    "&.Mui-focused": {
-                      backgroundColor: "white",
-                    },
+                    "&:hover": { backgroundColor: "#f3f4f6" },
+                    "&.Mui-focused": { backgroundColor: "white" },
                   },
                 }}
               />
@@ -141,12 +150,8 @@ export default function AuthForm() {
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "12px",
                   backgroundColor: "#f9fafb",
-                  "&:hover": {
-                    backgroundColor: "#f3f4f6",
-                  },
-                  "&.Mui-focused": {
-                    backgroundColor: "white",
-                  },
+                  "&:hover": { backgroundColor: "#f3f4f6" },
+                  "&.Mui-focused": { backgroundColor: "white" },
                 },
               }}
             />
@@ -161,12 +166,8 @@ export default function AuthForm() {
                 "& .MuiOutlinedInput-root": {
                   borderRadius: "12px",
                   backgroundColor: "#f9fafb",
-                  "&:hover": {
-                    backgroundColor: "#f3f4f6",
-                  },
-                  "&.Mui-focused": {
-                    backgroundColor: "white",
-                  },
+                  "&:hover": { backgroundColor: "#f3f4f6" },
+                  "&.Mui-focused": { backgroundColor: "white" },
                 },
               }}
             />
@@ -205,6 +206,9 @@ export default function AuthForm() {
           <Button
             fullWidth
             variant="outlined"
+            onClick={handleGoogleAuth}
+            disabled={loading}
+            startIcon={<GoogleIcon />}
             sx={{
               py: 1.5,
               borderRadius: "12px",
@@ -229,9 +233,7 @@ export default function AuthForm() {
                 textTransform: "none",
                 fontWeight: 500,
                 color: "#6366f1",
-                "&:hover": {
-                  backgroundColor: "rgba(99, 102, 241, 0.04)",
-                },
+                "&:hover": { backgroundColor: "rgba(99, 102, 241, 0.04)" },
               }}
             >
               {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
