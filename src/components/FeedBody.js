@@ -12,105 +12,122 @@ import {
 } from '@mui/material';
 import MovieIcon from '@mui/icons-material/Movie';
 import { useSelector } from 'react-redux';
+import BrowseHero from './BrowseHero';
+import SearchSection from './SearchSection';
+import MovieSection from './MovieSection';
 
-const demoMovies = [
+
+export const trendingMovies = [
   {
-    title: 'Inception',
-    summary: 'A mind-bending thriller by Christopher Nolan.',
-    image: 'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_FMjpg_UX700_.jpg',
+    title: "Avatar: The Way of Water",
+    tagline: "Return to Pandora",
+    poster: "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
   },
   {
-    title: 'The Matrix',
-    summary: 'Reality is not what it seems. Welcome to the Matrix.',
-    image: 'https://m.media-amazon.com/images/M/MV5BN2NmN2VhMTQtMDNiOS00NDlhLTliMjgtODE2ZTY0ODQyNDRhXkEyXkFqcGc@._V1_FMjpg_UY3156_.jpg',
+    title: "Black Panther",
+    tagline: "Wakanda Forever",
+    poster: "https://images.pexels.com/photos/7991492/pexels-photo-7991492.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
   },
   {
-    title: 'Interstellar',
-    summary: 'Journey through space and time to save humanity.',
-    image: 'https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_FMjpg_UY3600_.jpg',
+    title: "Spider-Man",
+    tagline: "No Way Home",
+    poster: "https://images.pexels.com/photos/7991668/pexels-photo-7991668.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
   },
   {
-    title: 'The Dark Knight',
-    summary: 'The rise of Gotham’s vigilante hero, Batman.',
-    image: 'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_FMjpg_UY2048_.jpg',
+    title: "Dune",
+    tagline: "Dreams are messages",
+    poster: "https://images.pexels.com/photos/7991741/pexels-photo-7991741.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
   },
+  {
+    title: "The Batman",
+    tagline: "Vengeance awaits",
+    poster: "https://images.pexels.com/photos/7991825/pexels-photo-7991825.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  },
+  {
+    title: "Top Gun: Maverick",
+    tagline: "Feel the need",
+    poster: "https://images.pexels.com/photos/7991901/pexels-photo-7991901.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  }
 ];
+
+export const recentlyPlayed = [
+  {
+    title: "Inception",
+    tagline: "Dreams within dreams",
+    poster: "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  },
+  {
+    title: "Interstellar",
+    tagline: "Mankind's next step",
+    poster: "https://images.pexels.com/photos/7991492/pexels-photo-7991492.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  },
+  {
+    title: "The Dark Knight",
+    tagline: "Why so serious?",
+    poster: "https://images.pexels.com/photos/7991668/pexels-photo-7991668.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  },
+  {
+    title: "Parasite",
+    tagline: "Act like you own the place",
+    poster: "https://images.pexels.com/photos/7991741/pexels-photo-7991741.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  },
+  {
+    title: "Mad Max: Fury Road",
+    tagline: "What a lovely day",
+    poster: "https://images.pexels.com/photos/7991825/pexels-photo-7991825.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  }
+];
+
+export const recommendedMovies = [
+  {
+    title: "Blade Runner 2049",
+    tagline: "The future is now",
+    poster: "https://images.pexels.com/photos/7991901/pexels-photo-7991901.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  },
+  {
+    title: "The Matrix",
+    tagline: "Free your mind",
+    poster: "https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  },
+  {
+    title: "Joker",
+    tagline: "Put on a happy face",
+    poster: "https://images.pexels.com/photos/7991492/pexels-photo-7991492.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  },
+  {
+    title: "1917",
+    tagline: "Time is the enemy",
+    poster: "https://images.pexels.com/photos/7991668/pexels-photo-7991668.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  },
+  {
+    title: "Oppenheimer",
+    tagline: "The world forever changes",
+    poster: "https://images.pexels.com/photos/7991741/pexels-photo-7991741.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop"
+  }
+];
+
 
 const FeedBody = () => {
   const user = useSelector((state) => state.auth.user);
 
   return (
     <Container maxWidth="xl" sx={{ mt: 10, mb: 6 ,p:2}}>
-      {/* Welcome Card with Demo Movies */}
-      <Card
-        sx={{
-          p: 4,
-          borderRadius: 4,
-          backgroundColor: '#f9fafb',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-        }}
-      >
-        <CardContent>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} alignItems="center" mb={4}>
-            <Avatar
-              sx={{
-                bgcolor: '#6366f1',
-                width: 72,
-                height: 72,
-                fontSize: '2rem',
-              }}
-            >
-              <MovieIcon fontSize="large" />
-            </Avatar>
-            <Box>
-              <Typography variant="h5" fontWeight={700} gutterBottom>
-                Welcome back, {user?.displayName || 'User'}!
-              </Typography>
-              <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                Stay tuned! We’ll keep you updated with the latest movies and recommendations.
-              </Typography>
-            </Box>
-          </Stack>
+     <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
+        {/* Hero Video Banner */}
+        <BrowseHero />
+        
+        {/* Search Section */}
+        <SearchSection />
+        
+        {/* Movie Discovery Lists */}
+        <Box sx={{ py: 4 }}>
+          <MovieSection title="Trending Now" movies={trendingMovies} />
+          <MovieSection title="Recently Played" movies={recentlyPlayed} />
+          <MovieSection title="Because You Watched Inception" movies={recommendedMovies} />
+        </Box>
+      </Box>
 
-          <Grid container spacing={3}>
-            {demoMovies.map((movie, index) => (
-              <Grid item xs={6} sm={3} key={index}>
-                <Card sx={{ borderRadius: 3, overflow: 'hidden', boxShadow: '0 4px 10px rgba(0,0,0,0.08)' }}>
-                  <CardMedia
-                    component="img"
-                    height="180"
-                    image={movie.image}
-                    alt={movie.title}
-                  />
-                  <CardContent>
-                    <Typography variant="h6" fontWeight={700} gutterBottom>
-                      {movie.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      {movie.summary}
-                    </Typography>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        display: 'inline-block',
-                        mt: 1,
-                        px: 1.5,
-                        py: 0.5,
-                        borderRadius: '999px',
-                        backgroundColor: '#ffe0b2',
-                        color: '#e65100',
-                        fontWeight: 600,
-                      }}
-                    >
-                      Coming Soon
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </CardContent>
-      </Card>
+       
     </Container>
   );
 };
