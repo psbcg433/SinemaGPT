@@ -11,10 +11,10 @@ import routes from "./routes/routes";
 
 // ThemeWrapper handles theme selection using useSelector inside a component
 const ThemeWrapper = () => {
-  const user = useSelector((state) => state.auth.user);
+  // const user = useSelector((state) => state.auth.user);
 
   return (
-    <ThemeProvider theme={user ? darkTheme : customTheme}>
+    <ThemeProvider theme={darkTheme}>
       <RouterProvider router={routes}>
         <App />
       </RouterProvider>
