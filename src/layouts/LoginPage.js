@@ -8,7 +8,7 @@ const LoginPage = () => {
     return (
         <>
             <section id="hero"><HeroSection /></section>
-            <section id="features"><FeaturesSection /></section>
+            <section id="discover"><FeaturesSection /></section>
             <section id="faq"><FAQSection /></section>
             <section id="pricing"><PricingSection /></section>
         </>

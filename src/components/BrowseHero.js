@@ -292,7 +292,7 @@ const BrowseHero = () => {
         </Box>
 
         {/* Movie Icon with Enhanced Animation */}
-        <Box
+        {/* <Box
           sx={{
             mb: 3,
             display: "flex",
@@ -316,7 +316,7 @@ const BrowseHero = () => {
               filter: "drop-shadow(0 0 10px rgba(165, 180, 252, 0.5))"
             }} />
           </Box>
-        </Box>
+        </Box> */}
 
         {/* Main Title with Enhanced Effects */}
         <Typography 

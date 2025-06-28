@@ -130,7 +130,7 @@ export default function Footer() {
                     color: "transparent",
                   }}
                 >
-                  CineScope
+                  SinemaGPT
                 </Typography>
               </Box>
 
@@ -152,19 +152,19 @@ export default function Footer() {
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <Email sx={{ color: "#8B5CF6", fontSize: 20 }} />
                   <Typography variant="body2" sx={{ color: "#94A3B8" }}>
-                    hello@cinescope.com
+                    hello@sinemagpt.com
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <Phone sx={{ color: "#8B5CF6", fontSize: 20 }} />
                   <Typography variant="body2" sx={{ color: "#94A3B8" }}>
-                    +1 (555) 123-4567
+                    +91 0987654321
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <LocationOn sx={{ color: "#8B5CF6", fontSize: 20 }} />
                   <Typography variant="body2" sx={{ color: "#94A3B8" }}>
-                    San Francisco, CA
+                    West Bengal, India
                   </Typography>
                 </Box>
               </Stack>
@@ -270,7 +270,7 @@ export default function Footer() {
           }}
         >
           <Typography variant="body2" sx={{ color: "#64748B" }}>
-            © {new Date().getFullYear()} CineScope. All rights reserved. Made with ❤️ for movie lovers.
+            © {new Date().getFullYear()} SinemaGPT. All rights reserved. Made with ❤️ by Prashnik.
           </Typography>
 
           <Stack direction="row" spacing={3}>

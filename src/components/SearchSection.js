@@ -32,11 +32,12 @@ const SearchSection = () => {
     <Box
       sx={{
         position: 'relative',
+        overflow: 'hidden', // ✅ Remove scrollbars
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '30vh',
+        height: '100%',
         px: 2,
         py: 6,
         '&::before': {

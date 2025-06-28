@@ -1,39 +1,55 @@
-"use client"
+
 
 import { useState } from "react"
-import { Typography, Accordion, AccordionSummary, AccordionDetails, Stack, Container, Box, Fade } from "@mui/material"
-import { ExpandMore, Movie, Search, Recommend, Star, TrendingUp } from "@mui/icons-material"
+import {
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Stack,
+  Container,
+  Box,
+  Fade,
+} from "@mui/material"
+import {
+  ExpandMore,
+  Movie,
+  Search,
+  Favorite,
+  Star,
+  Group,
+} from "@mui/icons-material"
 
 const faqs = [
   {
-    question: "What is CineScope?",
+    question: "What is SinemaGPT?",
     answer:
-      "CineScope is an AI-powered movie recommendation database that helps you discover your next favorite film. Our intelligent system analyzes your preferences, viewing history, and ratings to suggest movies perfectly tailored to your taste.",
+      "SinemaGPT is a free AI-powered movie discovery platform. It helps you find movies by browsing genres, searching specific titles, adding to watchlists and favorites, and seeing what others are watching—without streaming or subscriptions.",
     icon: <Movie sx={{ color: "#8B5CF6" }} />,
   },
   {
-    question: "How does the recommendation system work?",
+    question: "Is SinemaGPT completely free?",
     answer:
-      "Our advanced AI algorithm considers multiple factors including your rated movies, favorite genres, directors, actors, and viewing patterns. The more you interact with the platform, the more accurate and personalized your recommendations become.",
-    icon: <Recommend sx={{ color: "#8B5CF6" }} />,
-  },
-  {
-    question: "Is CineScope free to use?",
-    answer:
-      "Yes! CineScope offers a comprehensive free tier with access to our movie database and basic recommendations. Premium features include advanced filtering, exclusive reviews, and priority customer support.",
+      "Yes, all features are completely free! You can search the database, create watchlists, mark favorites, explore similar movies, and view community trends without any cost or ads.",
     icon: <Star sx={{ color: "#8B5CF6" }} />,
   },
   {
-    question: "How large is your movie database?",
+    question: "Can I watch movies on SinemaGPT?",
     answer:
-      "Our database contains over 500,000 movies from around the world, including classics, indie films, blockbusters, and international cinema. We continuously update our collection with new releases and hidden gems.",
+      "No. SinemaGPT is not a streaming service. It’s a movie database and discovery tool that helps you decide what to watch next based on AI-powered recommendations and community activity.",
     icon: <Search sx={{ color: "#8B5CF6" }} />,
   },
   {
-    question: "Can I track movies I want to watch?",
+    question: "How does SinemaGPT recommend movies?",
     answer:
-      "Create custom watchlists, mark movies as watched, rate them, and write reviews. You can also follow friends to see their recommendations and discover movies through your network.",
-    icon: <TrendingUp sx={{ color: "#8B5CF6" }} />,
+      "SinemaGPT uses an AI engine that analyzes your saved watchlists, favorite genres, preferred directors, and browsing patterns. It also shows what's trending in the community to help you discover similar titles.",
+    icon: <Group sx={{ color: "#8B5CF6" }} />,
+  },
+  {
+    question: "What can I do with my account?",
+    answer:
+      "You can create personalized watchlists, mark favorite films, leave reviews, and see community activity. All your preferences help improve your future recommendations.",
+    icon: <Favorite sx={{ color: "#8B5CF6" }} />,
   },
 ]
 
@@ -92,7 +108,7 @@ export default function FAQSection() {
                 mx: "auto",
               }}
             >
-              Everything you need to know about discovering your next favorite movie
+              Everything you need to know about exploring movies with SinemaGPT
             </Typography>
           </Box>
         </Fade>
@@ -151,7 +167,8 @@ export default function FAQSection() {
                         width: 40,
                         height: 40,
                         borderRadius: "12px",
-                        background: "linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2))",
+                        background:
+                          "linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2))",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -199,7 +216,8 @@ export default function FAQSection() {
             width: "200px",
             height: "200px",
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%)",
+            background:
+              "radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%)",
             animation: "float 6s ease-in-out infinite",
             "@keyframes float": {
               "0%, 100%": { transform: "translateY(0px)" },
@@ -215,7 +233,8 @@ export default function FAQSection() {
             width: "150px",
             height: "150px",
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%)",
+            background:
+              "radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%)",
             animation: "float 8s ease-in-out infinite reverse",
           }}
         />
