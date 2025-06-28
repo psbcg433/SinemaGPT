@@ -2,9 +2,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import LoginPage from "../layouts/LoginPage";
-import FeedBody from "../components/FeedBody";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicOnlyRoute from "./PublicOnlyRoute";
+import FeedPage from "../layouts/FeedPage";
 
 const routes = createBrowserRouter([
   {
@@ -23,7 +23,7 @@ const routes = createBrowserRouter([
         path: "feed",
         element: (
           <ProtectedRoute>
-            <FeedBody />
+            <FeedPage />
           </ProtectedRoute>
         ),
       },

@@ -13,7 +13,9 @@ import "react-toastify/dist/ReactToastify.css";
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const dispatch = useDispatch();
+  
 
+ 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
