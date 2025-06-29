@@ -28,12 +28,32 @@ const initialState = {
     loading: false,
     error: null,
   },
+  searchResult: {
+    title: "",
+    list: [],
+    loading: false,
+    error: null,
+  },
 };
 
 const movieSlice = createSlice({
   name: "movies",
   initialState,
-  reducers: {},
+  reducers: {
+    setSearchLoading: (state) => {
+      state.searchResult.loading = true;
+      state.searchResult.error = null;
+    },
+    setSearchSuccess: (state, action) => {
+      state.searchResult.loading = false;
+      state.searchResult.list = action.payload.list;
+      state.searchResult.title = action.payload.title;
+    },
+    setSearchError: (state, action) => {
+      state.searchResult.loading = false;
+      state.searchResult.error = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchNowPlaying.pending, (state) => {
@@ -93,4 +113,5 @@ const movieSlice = createSlice({
   },
 });
 
+export const { setSearchLoading, setSearchSuccess, setSearchError } = movieSlice.actions;
 export default movieSlice.reducer;
