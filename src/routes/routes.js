@@ -5,6 +5,7 @@ import LoginPage from "../layouts/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicOnlyRoute from "./PublicOnlyRoute";
 import FeedPage from "../layouts/FeedPage";
+import MoviePage from "../layouts/MoviePage";
 
 const routes = createBrowserRouter([
   {
@@ -24,6 +25,14 @@ const routes = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <FeedPage />
+          </ProtectedRoute>
+        ),
+      },
+       {
+        path: "movie/:movieId",
+        element: (
+          <ProtectedRoute>
+            <MoviePage/>
           </ProtectedRoute>
         ),
       },

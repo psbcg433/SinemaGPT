@@ -1,4 +1,4 @@
-// src/redux/movies/MovieSlice.js
+// src/redux/movies/movieSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import {
   fetchNowPlaying,
@@ -36,6 +36,23 @@ const initialState = {
   },
 };
 
+// 🔁 Helper function to DRY up thunk handlers
+const handleAsyncCases = (builder, thunk, key) => {
+  builder
+    .addCase(thunk.pending, (state) => {
+      state[key].loading = true;
+      state[key].error = null;
+    })
+    .addCase(thunk.fulfilled, (state, action) => {
+      state[key].loading = false;
+      state[key].list = Array.isArray(action.payload) ? action.payload : [];
+    })
+    .addCase(thunk.rejected, (state, action) => {
+      state[key].loading = false;
+      state[key].error = action.payload;
+    });
+};
+
 const movieSlice = createSlice({
   name: "movies",
   initialState,
@@ -52,66 +69,29 @@ const movieSlice = createSlice({
     setSearchError: (state, action) => {
       state.searchResult.loading = false;
       state.searchResult.error = action.payload;
-    }
+    },
+    clearSearchResults: (state) => {
+      state.searchResult = {
+        title: "",
+        list: [],
+        loading: false,
+        error: null,
+      };
+    },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchNowPlaying.pending, (state) => {
-        state.nowPlaying.loading = true;
-        state.nowPlaying.error = null;
-      })
-      .addCase(fetchNowPlaying.fulfilled, (state, action) => {
-        state.nowPlaying.loading = false;
-        state.nowPlaying.list = action.payload;
-      })
-      .addCase(fetchNowPlaying.rejected, (state, action) => {
-        state.nowPlaying.loading = false;
-        state.nowPlaying.error = action.payload;
-      });
-
-    builder
-      .addCase(fetchPopular.pending, (state) => {
-        state.popular.loading = true;
-        state.popular.error = null;
-      })
-      .addCase(fetchPopular.fulfilled, (state, action) => {
-        state.popular.loading = false;
-        state.popular.list = action.payload;
-      })
-      .addCase(fetchPopular.rejected, (state, action) => {
-        state.popular.loading = false;
-        state.popular.error = action.payload;
-      });
-
-    builder
-      .addCase(fetchTopRated.pending, (state) => {
-        state.topRated.loading = true;
-        state.topRated.error = null;
-      })
-      .addCase(fetchTopRated.fulfilled, (state, action) => {
-        state.topRated.loading = false;
-        state.topRated.list = action.payload;
-      })
-      .addCase(fetchTopRated.rejected, (state, action) => {
-        state.topRated.loading = false;
-        state.topRated.error = action.payload;
-      });
-
-    builder
-      .addCase(fetchUpcoming.pending, (state) => {
-        state.upcoming.loading = true;
-        state.upcoming.error = null;
-      })
-      .addCase(fetchUpcoming.fulfilled, (state, action) => {
-        state.upcoming.loading = false;
-        state.upcoming.list = action.payload;
-      })
-      .addCase(fetchUpcoming.rejected, (state, action) => {
-        state.upcoming.loading = false;
-        state.upcoming.error = action.payload;
-      });
+    handleAsyncCases(builder, fetchNowPlaying, "nowPlaying");
+    handleAsyncCases(builder, fetchPopular, "popular");
+    handleAsyncCases(builder, fetchTopRated, "topRated");
+    handleAsyncCases(builder, fetchUpcoming, "upcoming");
   },
 });
 
-export const { setSearchLoading, setSearchSuccess, setSearchError } = movieSlice.actions;
+export const {
+  setSearchLoading,
+  setSearchSuccess,
+  setSearchError,
+  clearSearchResults,
+} = movieSlice.actions;
+
 export default movieSlice.reducer;
