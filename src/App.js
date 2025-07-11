@@ -9,13 +9,13 @@ import { Box } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import { Outlet } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { fetchOrCreateUser } from "./utils/helpers";
+import { setUserData, clearUserData } from "./store/userSlice/userSlice";
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const dispatch = useDispatch();
-  
 
- 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -25,13 +25,29 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        dispatch(setUser({ displayName: user.displayName, email: user.email }));
+        dispatch(
+          setUser({
+            displayName: user.displayName,
+            email: user.email,
+          })
+        );
+
+        const userData = await fetchOrCreateUser(user);
+        dispatch(
+          setUserData({
+            ...userData,
+            name: user.displayName,
+            photoURL: user.photoURL,
+          })
+        );
       } else {
         dispatch(setUser(null));
+        dispatch(clearUserData());
       }
     });
+
     return () => unsubscribe();
   }, [dispatch]);
 

@@ -1,22 +1,34 @@
-// src/routes.js
+// src/routes/routes.js
 import { createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
+
 import App from "../App";
-import LoginPage from "../layouts/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicOnlyRoute from "./PublicOnlyRoute";
-import FeedPage from "../layouts/FeedPage";
-import MoviePage from "../layouts/MoviePage";
+
+import FallbackFeedPage from "../components/FallbackFeedPage";
+import FallbackMoviePage from "../components/FallbackMoviePage";
+import FallbackProfilePage from "../components/FallbackProfilePage";
+import FallbackLoginPage from "../components/FallbackLoginPage"; // Import your new component
+
+// ✅ Lazy-loaded route components
+const LoginPage = lazy(() => import("../layouts/LoginPage"));
+const FeedPage = lazy(() => import("../layouts/FeedPage"));
+const MoviePage = lazy(() => import("../layouts/MoviePage"));
+const ProfilePage = lazy(() => import("../layouts/ProfilePage"));
 
 const routes = createBrowserRouter([
   {
     path: "/",
-    element: <App />, 
+    element: <App />,
     children: [
       {
         index: true,
         element: (
           <PublicOnlyRoute>
-            <LoginPage />
+            <Suspense fallback={<FallbackLoginPage />}> {/* Updated fallback */}
+              <LoginPage />
+            </Suspense>
           </PublicOnlyRoute>
         ),
       },
@@ -24,15 +36,29 @@ const routes = createBrowserRouter([
         path: "feed",
         element: (
           <ProtectedRoute>
-            <FeedPage />
+            <Suspense fallback={<FallbackFeedPage />}>
+              <FeedPage />
+            </Suspense>
           </ProtectedRoute>
         ),
       },
-       {
+      {
         path: "movie/:movieId",
         element: (
           <ProtectedRoute>
-            <MoviePage/>
+            <Suspense fallback={<FallbackMoviePage />}>
+              <MoviePage />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <Suspense fallback={<FallbackProfilePage />}>
+              <ProfilePage />
+            </Suspense>
           </ProtectedRoute>
         ),
       },

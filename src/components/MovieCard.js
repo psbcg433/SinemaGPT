@@ -9,9 +9,20 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import { Favorite, PlaylistAdd, Info } from '@mui/icons-material';
+import {
+  Favorite,
+  FavoriteBorder,
+  PlaylistAdd,
+  PlaylistAddCheck,
+  Info,
+} from '@mui/icons-material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  toggleFavouriteThunk,
+  toggleWatchlistThunk,
+} from '../store/userSlice/userSlice';
 
 const MovieCard = ({ movie }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -19,9 +30,22 @@ const MovieCard = ({ movie }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isDark = theme.palette.mode === 'dark';
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { favourites, watchlist } = useSelector((state) => state.user);
+  const isFavourite = favourites.some((m) => m.id === movie.id);
+  const isInWatchlist = watchlist.some((m) => m.id === movie.id);
 
   const handleDetailsClick = () => {
     navigate(`/movie/${movie.id}`, { state: movie });
+  };
+
+  const handleFavouriteToggle = () => {
+    dispatch(toggleFavouriteThunk(movie));
+  };
+
+  const handleWatchlistToggle = () => {
+    dispatch(toggleWatchlistThunk(movie));
   };
 
   return (
@@ -30,7 +54,7 @@ const MovieCard = ({ movie }) => {
         width: isMobile ? 180 : 240,
         height: isMobile ? 300 : 360,
         flexShrink: 0,
-        borderRadius: 1.5, // Less rounded corners
+        borderRadius: 1.5,
         overflow: 'hidden',
         cursor: 'pointer',
         position: 'relative',
@@ -139,8 +163,21 @@ const MovieCard = ({ movie }) => {
               Details
             </Button>
 
-            <IconButton size="small"><Favorite /></IconButton>
-            <IconButton size="small"><PlaylistAdd /></IconButton>
+            <IconButton size="small" onClick={handleFavouriteToggle}>
+              {isFavourite ? (
+                <Favorite sx={{ color: theme.palette.error.main }} />
+              ) : (
+                <FavoriteBorder />
+              )}
+            </IconButton>
+
+            <IconButton size="small" onClick={handleWatchlistToggle}>
+              {isInWatchlist ? (
+                <PlaylistAddCheck sx={{ color: theme.palette.info.light }} />
+              ) : (
+                <PlaylistAdd />
+              )}
+            </IconButton>
           </Box>
         </Box>
       </Box>

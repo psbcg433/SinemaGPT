@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useRef, useState } from "react";
 import {
   Card,
   CardContent,
@@ -9,85 +9,90 @@ import {
   Divider,
   Box,
   CircularProgress,
-} from "@mui/material"
-import { useDispatch } from "react-redux"
-import { setUser } from "../store/authSlice/authSlice.js"
-import { auth, googleAuthProvider } from "../utils/firebase.js"
+} from "@mui/material";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/authSlice/authSlice";
+import { auth, googleAuthProvider } from "../utils/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
   signInWithPopup,
-} from "firebase/auth"
-import { toast } from "react-toastify"
-import GoogleIcon from "@mui/icons-material/Google"
-import { Movie, Stars } from "@mui/icons-material"
+} from "firebase/auth";
+import { toast } from "react-toastify";
+import GoogleIcon from "@mui/icons-material/Google";
+import { Movie, Stars } from "@mui/icons-material";
 
 export default function AuthForm() {
-  const [isLogin, setIsLogin] = useState(true)
-  const [formLoading, setFormLoading] = useState(false)
-  const [googleLoading, setGoogleLoading] = useState(false)
-  const dispatch = useDispatch()
+  const [isLogin, setIsLogin] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const dispatch = useDispatch();
 
-  const nameRef = useRef()
-  const emailRef = useRef()
-  const passwordRef = useRef()
+  const nameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
-  const toggleAuthMode = () => setIsLogin(!isLogin)
+  const toggleAuthMode = () => setIsLogin(!isLogin);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    const email = emailRef.current.value
-    const password = passwordRef.current.value
-    setFormLoading(true)
+    e.preventDefault();
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    setFormLoading(true);
 
     try {
       if (isLogin) {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password)
-        const user = userCredential.user
-        dispatch(setUser({ displayName: user.displayName, email: user.email }))
-        toast.success(`Welcome back, ${user.displayName || "movie lover"}!`)
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        toast.success(`Welcome back, ${user.displayName || "movie lover"}!`);
       } else {
-        const displayName = nameRef.current.value
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-        await updateProfile(userCredential.user, { displayName })
-        dispatch(setUser({ displayName, email }))
-        toast.success("Account created! Start discovering amazing movies!")
+        const displayName = nameRef.current.value;
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, {
+          displayName,
+          // ✅ photoURL intentionally omitted
+        });
+        toast.success("Account created! Start discovering amazing movies!");
       }
     } catch (error) {
-      console.error("Authentication Error:", error.message)
-      if (error.code === "auth/email-already-in-use") {
-        toast.error("This email is already registered.")
-      } else if (error.code === "auth/invalid-email") {
-        toast.error("Invalid email format.")
-      } else if (error.code === "auth/weak-password") {
-        toast.error("Password should be at least 6 characters.")
-      } else if (error.code === "auth/user-not-found") {
-        toast.error("No user found with this email.")
-      } else if (error.code === "auth/wrong-password") {
-        toast.error("Incorrect password.")
-      } else {
-        toast.error(error.message || "Something went wrong.")
+      console.error("Authentication Error:", error.message);
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          toast.error("This email is already registered.");
+          break;
+        case "auth/invalid-email":
+          toast.error("Invalid email format.");
+          break;
+        case "auth/weak-password":
+          toast.error("Password should be at least 6 characters.");
+          break;
+        case "auth/user-not-found":
+          toast.error("No user found with this email.");
+          break;
+        case "auth/wrong-password":
+          toast.error("Incorrect password.");
+          break;
+        default:
+          toast.error(error.message || "Something went wrong.");
       }
     } finally {
-      setFormLoading(false)
+      setFormLoading(false);
     }
-  }
+  };
 
   const handleGoogleAuth = async () => {
-    setGoogleLoading(true)
+    setGoogleLoading(true);
     try {
-      const result = await signInWithPopup(auth, googleAuthProvider)
-      const user = result.user
-      dispatch(setUser({ displayName: user.displayName, email: user.email }))
-      toast.success(`Welcome, ${user.displayName || "movie enthusiast"}!`)
+      await signInWithPopup(auth, googleAuthProvider);
+      toast.success("Signed in with Google!");
     } catch (error) {
-      console.error("Google Sign-In Error:", error.message)
-      toast.error("Google sign-in failed. Please try again.")
+      console.error("Google Sign-In Error:", error.message);
+      toast.error("Google sign-in failed. Please try again.");
     } finally {
-      setGoogleLoading(false)
+      setGoogleLoading(false);
     }
-  }
+  };
 
   return (
     <Card
@@ -257,7 +262,7 @@ export default function AuthForm() {
         </Box>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 const inputStyles = {
@@ -279,7 +284,7 @@ const inputStyles = {
     color: "#94A3B8",
     "&.Mui-focused": { color: "#8B5CF6" },
   },
-}
+};
 
 const buttonStyles = {
   py: 1.8,
@@ -293,4 +298,4 @@ const buttonStyles = {
     background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
     boxShadow: "0 12px 40px rgba(139, 92, 246, 0.6)",
   },
-}
+};

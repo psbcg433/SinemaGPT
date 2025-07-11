@@ -1,4 +1,4 @@
-
+"use client"
 
 import { useEffect } from "react"
 import { useParams, useLocation } from "react-router-dom"
@@ -44,11 +44,11 @@ const MoviePage = () => {
   const movieData = location.state
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     console.log("🎬 Movie ID from URL:", movieId)
     console.log("📦 Movie data from state:", movieData)
   }, [movieId, movieData])
 
-  // Handle case where movie data is not available
   if (!movieData) {
     return (
       <Box
@@ -58,9 +58,17 @@ const MoviePage = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          px: 2,
         }}
       >
-        <Typography variant="h4" sx={{ color: "#F1F5F9" }}>
+        <Typography
+          variant="h4"
+          sx={{
+            color: "#F1F5F9",
+            fontSize: { xs: "1.5rem", md: "2.125rem" },
+            textAlign: "center",
+          }}
+        >
           Movie data not found
         </Typography>
       </Box>
@@ -86,7 +94,7 @@ const MoviePage = () => {
           key={i}
           style={{
             color: filled ? "#8B5CF6" : "#334155",
-            fontSize: "1.5rem",
+            fontSize: "1.2rem",
             textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
           }}
         >
@@ -98,23 +106,18 @@ const MoviePage = () => {
   }
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        background: "#0F172A",
-        position: "relative",
-      }}
-    >
+    <Box sx={{ minHeight: "100vh", background: "#0F172A", position: "relative" }}>
       {/* Hero Section */}
       <Box
         sx={{
           position: "relative",
-          height: "100vh",
+          height: { xs: "auto", md: "100vh" },
+          minHeight: { xs: "100vh", md: "auto" },
           backgroundImage: `url(${backdropUrl})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           display: "flex",
-          alignItems: "center",
+          alignItems: { xs: "flex-start", md: "center" },
           "&::before": {
             content: '""',
             position: "absolute",
@@ -124,7 +127,7 @@ const MoviePage = () => {
             bottom: 0,
             background: `
               radial-gradient(ellipse at center top, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-              linear-gradient(135deg, rgba(15,23,42,0.4) 0%, rgba(30,41,59,0.6) 50%, rgba(15,23,42,0.9) 100%)
+              linear-gradient(135deg, rgba(15,23,42,0.6) 0%, rgba(30,41,59,0.8) 50%, rgba(15,23,42,0.95) 100%)
             `,
           },
           "&::after": {
@@ -133,30 +136,37 @@ const MoviePage = () => {
             bottom: 0,
             left: 0,
             right: 0,
-            height: "200px",
+            height: { xs: "100px", md: "200px" },
             background: "linear-gradient(transparent, #0F172A)",
           },
         }}
       >
         <Container
-          maxWidth=""
           sx={{
             position: "relative",
             zIndex: 2,
             display: "flex",
-            alignItems: "center",
-            minHeight: "100vh",
-            py: 8,
+            alignItems: { xs: "flex-start", md: "center" },
+            minHeight: { xs: "100vh", md: "auto" },
+            py: { xs: 4, md: 8 },
+            flexDirection: { xs: "column", lg: "row" },
           }}
         >
-          <Box sx={{ maxWidth: "60%", pr: 4 }}>
+          {/* Movie Info */}
+          <Box
+            sx={{
+              width: { xs: "100%", lg: "60%" },
+              pr: { xs: 0, lg: 4 },
+              mb: { xs: 4, lg: 0 },
+              pt: { xs: 8, md: 4, lg: 0 },
+            }}
+          >
             <Typography
               variant="h1"
-              component="h1"
               sx={{
                 color: "#F1F5F9",
                 fontWeight: 900,
-                fontSize: { xs: "2.5rem", md: "4rem", lg: "5rem" },
+                fontSize: { xs: "2rem", sm: "2.5rem", md: "3.5rem", lg: "4rem", xl: "5rem" },
                 textShadow: "3px 3px 6px rgba(0,0,0,0.8)",
                 mb: 2,
                 lineHeight: 1.1,
@@ -178,27 +188,34 @@ const MoviePage = () => {
                   textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
                   mb: 3,
                   fontWeight: 300,
+                  fontSize: { xs: "1.25rem", sm: "1.5rem", md: "2rem" },
                 }}
               >
                 {movie.original_title}
               </Typography>
             )}
 
-            {/* Quick Stats */}
             <Stack spacing={3}>
-              <Stack direction="row" spacing={3} alignItems="center" flexWrap="wrap">
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={{ xs: 2, sm: 3 }}
+                alignItems={{ xs: "flex-start", sm: "center" }}
+                flexWrap="wrap"
+                sx={{ gap: { xs: 1, sm: 0 } }}
+              >
                 <Typography
                   variant="h5"
                   sx={{
                     color: "#8B5CF6",
                     fontWeight: 700,
                     textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+                    fontSize: { xs: "1.25rem", md: "1.5rem" },
                   }}
                 >
                   {releaseYear}
                 </Typography>
 
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
                   <Box sx={{ display: "flex", gap: 0.2 }}>{renderStars(movie.vote_average)}</Box>
                   <Typography
                     variant="h6"
@@ -206,6 +223,7 @@ const MoviePage = () => {
                       color: "#F1F5F9",
                       fontWeight: 700,
                       textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+                      fontSize: { xs: "1rem", md: "1.25rem" },
                     }}
                   >
                     {movie.vote_average?.toFixed(1)}
@@ -215,6 +233,7 @@ const MoviePage = () => {
                     sx={{
                       color: "#94A3B8",
                       textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+                      fontSize: { xs: "0.875rem", md: "1rem" },
                     }}
                   >
                     ({movie.vote_count?.toLocaleString()} votes)
@@ -231,7 +250,7 @@ const MoviePage = () => {
                       background: "linear-gradient(135deg, rgba(139,92,246,0.9) 0%, rgba(124,58,237,0.9) 100%)",
                       color: "#F1F5F9",
                       fontWeight: 600,
-                      fontSize: "0.9rem",
+                      fontSize: { xs: "0.75rem", md: "0.9rem" },
                       px: 1,
                       backdropFilter: "blur(10px)",
                       border: "1px solid rgba(139,92,246,0.3)",
@@ -245,73 +264,77 @@ const MoviePage = () => {
                   />
                 ))}
               </Stack>
-            </Stack>
 
-            <Typography
-              variant="h6"
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "#CBD5E1",
+                  lineHeight: 1.6,
+                  maxWidth: { xs: "100%", md: "600px" },
+                  textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
+                  fontSize: { xs: "0.875rem", sm: "1rem", md: "1.25rem" },
+                  mt: { xs: 2, md: 4 },
+                }}
+              >
+                {movie.overview}
+              </Typography>
+            </Stack>
+          </Box>
+
+          {/* Poster Card */}
+          <Box
+            sx={{
+              width: { xs: "100%", sm: "300px", lg: "auto" },
+              display: "flex",
+              justifyContent: { xs: "center", lg: "flex-end" },
+              alignSelf: { xs: "center", lg: "center" },
+              position: { xs: "static", lg: "absolute" },
+              right: { lg: 60, xl: 100 },
+              top: { lg: "50%" },
+              transform: { lg: "translateY(-50%)" },
+              zIndex: 10,
+            }}
+          >
+            <Card
               sx={{
-                color: "#CBD5E1",
-                lineHeight: 1.6,
-                maxWidth: "600px",
-                textShadow: "1px 1px 2px rgba(0,0,0,0.8)",
-                fontSize: { xs: "1rem", md: "1.25rem" },
-                mt: 4,
+                width: { xs: 250, sm: 280, md: 300, lg: 320 },
+                background: "linear-gradient(135deg, rgba(139,92,246,0.2), rgba(124,58,237,0.2))",
+                border: "2px solid rgba(139,92,246,0.4)",
+                borderRadius: 3,
+                overflow: "hidden",
+                boxShadow: `
+                  0 25px 50px -12px rgba(0, 0, 0, 0.8),
+                  0 0 0 1px rgba(139,92,246,0.1),
+                  0 0 50px rgba(139,92,246,0.3)
+                `,
+                backdropFilter: "blur(10px)",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  transform: { xs: "scale(1.02)", md: "scale(1.05) rotateY(5deg)" },
+                  boxShadow: `
+                    0 35px 70px -12px rgba(0, 0, 0, 0.9),
+                    0 0 0 1px rgba(139,92,246,0.2),
+                    0 0 80px rgba(139,92,246,0.5)
+                  `,
+                },
               }}
             >
-              {movie.overview}
-            </Typography>
+              <CardMedia
+                component="img"
+                image={posterUrl}
+                alt={movie.title}
+                sx={{
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
+                }}
+              />
+            </Card>
           </Box>
         </Container>
       </Box>
 
-      {/* Floating Poster */}
-      <Box
-        sx={{
-          position: "absolute",
-          right: { xs: 20, md: 60, lg: 100 },
-          top: { xs: "60vh", md: "50vh" },
-          zIndex: 10,
-          transform: "translateY(-50%)",
-        }}
-      >
-        <Card
-          sx={{
-            width: { xs: 200, md: 280, lg: 320 },
-            background: "linear-gradient(135deg, rgba(139,92,246,0.2), rgba(124,58,237,0.2))",
-            border: "2px solid rgba(139,92,246,0.4)",
-            borderRadius: 3,
-            overflow: "hidden",
-            boxShadow: `
-              0 25px 50px -12px rgba(0, 0, 0, 0.8),
-              0 0 0 1px rgba(139,92,246,0.1),
-              0 0 50px rgba(139,92,246,0.3)
-            `,
-            backdropFilter: "blur(10px)",
-            transition: "all 0.3s ease",
-            "&:hover": {
-              transform: "scale(1.05) rotateY(5deg)",
-              boxShadow: `
-                0 35px 70px -12px rgba(0, 0, 0, 0.9),
-                0 0 0 1px rgba(139,92,246,0.2),
-                0 0 80px rgba(139,92,246,0.5)
-              `,
-            },
-          }}
-        >
-          <CardMedia
-            component="img"
-            image={posterUrl}
-            alt={movie.title}
-            sx={{
-              width: "100%",
-              height: "auto",
-              display: "block",
-            }}
-          />
-        </Card>
-      </Box>
-
-      {/* Action Bar */}
+      {/* Sticky Navigation */}
       <Box
         sx={{
           position: "sticky",
@@ -320,22 +343,27 @@ const MoviePage = () => {
           background: "rgba(15, 23, 42, 0.95)",
           backdropFilter: "blur(20px)",
           borderBottom: "1px solid rgba(139,92,246,0.2)",
-          py: 2,
+          py: { xs: 1.5, md: 2 },
         }}
       >
         <Container maxWidth="xl">
-          <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={2}>
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            justifyContent="flex-start"
+            alignItems={{ xs: "stretch", sm: "center" }}
+            spacing={2}
+          >
             <Button
               variant="contained"
               sx={{
                 background: "linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)",
                 color: "#F1F5F9",
                 fontWeight: 600,
-                px: 4,
-                py: 1.5,
+                px: { xs: 3, md: 4 },
+                py: { xs: 1.2, md: 1.5 },
                 borderRadius: 2,
                 textTransform: "none",
-                fontSize: "1rem",
+                fontSize: { xs: "0.875rem", md: "1rem" },
                 boxShadow: "0 8px 25px rgba(139,92,246,0.4)",
                 "&:hover": {
                   background: "linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)",
@@ -354,10 +382,11 @@ const MoviePage = () => {
                 borderColor: "rgba(139,92,246,0.5)",
                 color: "#8B5CF6",
                 fontWeight: 600,
-                px: 3,
-                py: 1.5,
+                px: { xs: 2.5, md: 3 },
+                py: { xs: 1.2, md: 1.5 },
                 borderRadius: 2,
                 textTransform: "none",
+                fontSize: { xs: "0.875rem", md: "1rem" },
                 "&:hover": {
                   borderColor: "#8B5CF6",
                   background: "rgba(139,92,246,0.1)",
@@ -370,15 +399,20 @@ const MoviePage = () => {
         </Container>
       </Box>
 
-      {/* Main Content */}
-      <Box sx={{ py: 8, background: "linear-gradient(180deg, #0F172A 0%, #1E293B 100%)" }}>
+      {/* Content Section */}
+      <Box sx={{ py: { xs: 4, md: 8 }, background: "linear-gradient(180deg, #0F172A 0%, #1E293B 100%)" }}>
         <Container maxWidth="xl">
           <Grid container spacing={4}>
             <Grid item xs={12}>
               <Box
-                sx={{ display: "flex", gap: 4, alignItems: "flex-start", flexDirection: { xs: "column", lg: "row" } }}
+                sx={{
+                  display: "flex",
+                  gap: 4,
+                  alignItems: "flex-start",
+                  flexDirection: { xs: "column", lg: "row" },
+                }}
               >
-                {/* About the Movie - 3/4 ratio */}
+                {/* About Section */}
                 <Box sx={{ flex: { lg: 3 }, width: { xs: "100%", lg: "auto" } }}>
                   <Card
                     sx={{
@@ -389,14 +423,14 @@ const MoviePage = () => {
                       boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
                     }}
                   >
-                    <CardContent sx={{ p: 4 }}>
+                    <CardContent sx={{ p: { xs: 3, md: 4 } }}>
                       <Typography
                         variant="h4"
-                        component="h2"
                         sx={{
                           color: "#F1F5F9",
                           fontWeight: 700,
                           mb: 3,
+                          fontSize: { xs: "1.5rem", md: "2.125rem" },
                           background: "linear-gradient(135deg, #F1F5F9 0%, #8B5CF6 100%)",
                           backgroundClip: "text",
                           WebkitBackgroundClip: "text",
@@ -411,7 +445,7 @@ const MoviePage = () => {
                         sx={{
                           color: "#CBD5E1",
                           lineHeight: 1.8,
-                          fontSize: "1.1rem",
+                          fontSize: { xs: "1rem", md: "1.1rem" },
                           mb: 4,
                         }}
                       >
@@ -421,7 +455,15 @@ const MoviePage = () => {
                       <Divider sx={{ borderColor: "rgba(139,92,246,0.2)", my: 3 }} />
 
                       <Box
-                        sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 3 }}
+                        sx={{
+                          display: "grid",
+                          gridTemplateColumns: {
+                            xs: "1fr",
+                            sm: "repeat(2, 1fr)",
+                            lg: "repeat(auto-fit, minmax(200px, 1fr))",
+                          },
+                          gap: 3,
+                        }}
                       >
                         {[
                           { label: "Original Title", value: movie.original_title },
@@ -448,6 +490,7 @@ const MoviePage = () => {
                               sx={{
                                 color: "#F1F5F9",
                                 fontWeight: 500,
+                                fontSize: { xs: "0.875rem", md: "1rem" },
                               }}
                             >
                               {item.value}
@@ -459,7 +502,7 @@ const MoviePage = () => {
                   </Card>
                 </Box>
 
-                {/* Movie Rating - 1/4 ratio */}
+                {/* Rating Section */}
                 <Box sx={{ flex: { lg: 1 }, width: { xs: "100%", lg: "auto" } }}>
                   <Card
                     sx={{
@@ -470,7 +513,7 @@ const MoviePage = () => {
                       boxShadow: "0 15px 35px rgba(139,92,246,0.2)",
                     }}
                   >
-                    <CardContent sx={{ p: 3 }}>
+                    <CardContent sx={{ p: { xs: 2.5, md: 3 } }}>
                       <Typography
                         variant="h6"
                         sx={{
@@ -478,6 +521,7 @@ const MoviePage = () => {
                           fontWeight: 600,
                           mb: 3,
                           textAlign: "center",
+                          fontSize: { xs: "1.125rem", md: "1.25rem" },
                         }}
                       >
                         Movie Rating
@@ -489,7 +533,7 @@ const MoviePage = () => {
                           sx={{
                             color: "#8B5CF6",
                             fontWeight: 900,
-                            fontSize: "3rem",
+                            fontSize: { xs: "2.5rem", md: "3rem" },
                             lineHeight: 1,
                           }}
                         >
@@ -500,6 +544,7 @@ const MoviePage = () => {
                           sx={{
                             color: "#94A3B8",
                             fontWeight: 500,
+                            fontSize: { xs: "0.875rem", md: "1rem" },
                           }}
                         >
                           out of 10
@@ -513,6 +558,7 @@ const MoviePage = () => {
                             sx={{
                               color: "#CBD5E1",
                               mb: 1,
+                              fontSize: { xs: "0.75rem", md: "0.875rem" },
                             }}
                           >
                             Total Votes
@@ -522,6 +568,7 @@ const MoviePage = () => {
                             sx={{
                               color: "#F1F5F9",
                               fontWeight: 600,
+                              fontSize: { xs: "1rem", md: "1.25rem" },
                             }}
                           >
                             {movie.vote_count?.toLocaleString()}
@@ -533,22 +580,10 @@ const MoviePage = () => {
                             background: "linear-gradient(90deg, #8B5CF6 0%, #7C3AED 100%)",
                             height: 8,
                             borderRadius: 4,
-                            position: "relative",
-                            overflow: "hidden",
+                            width: `${(movie.vote_average / 10) * 100}%`,
+                            mx: "auto",
                           }}
-                        >
-                          <Box
-                            sx={{
-                              position: "absolute",
-                              top: 0,
-                              left: 0,
-                              height: "100%",
-                              width: `${(movie.vote_average / 10) * 100}%`,
-                              background: "linear-gradient(90deg, #F1F5F9 0%, #8B5CF6 100%)",
-                              borderRadius: 4,
-                            }}
-                          />
-                        </Box>
+                        />
                       </Stack>
                     </CardContent>
                   </Card>

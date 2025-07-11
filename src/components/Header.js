@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -12,36 +12,42 @@ import {
   Avatar,
   Link as MUILink,
   Tooltip,
-} from "@mui/material"
-import {
-  Movie,
-  Menu as MenuIcon,
-  Favorite,
-  Settings,
-  Person,
-  ExitToApp,
-} from "@mui/icons-material"
-import { useSelector, useDispatch } from "react-redux"
-import { logoutUser } from "../store/authSlice/authSlice"
-import { signOut } from "firebase/auth"
-import { auth } from "../utils/firebase"
+} from "@mui/material";
+import { Movie, ExitToApp, Person } from "@mui/icons-material";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../store/authSlice/authSlice";
+import { signOut } from "firebase/auth";
+import { auth } from "../utils/firebase";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Header({ scrolled }) {
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [avatarAnchorEl, setAvatarAnchorEl] = useState(null)
-  const dispatch = useDispatch()
-  const user = useSelector((state) => state.auth.user)
+  const [avatarAnchorEl, setAvatarAnchorEl] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget)
-  const handleMenuClose = () => setAnchorEl(null)
-  const handleAvatarClick = (event) => setAvatarAnchorEl(event.currentTarget)
-  const handleAvatarMenuClose = () => setAvatarAnchorEl(null)
+  const authUser = useSelector((state) => state.auth.user);
+  const userInfo = useSelector((state) => state.user);
+
+  const handleAvatarClick = (event) => setAvatarAnchorEl(event.currentTarget);
+  const handleAvatarMenuClose = () => setAvatarAnchorEl(null);
 
   const handleLogout = async () => {
-    await signOut(auth)
-    dispatch(logoutUser())
-    handleAvatarMenuClose()
-  }
+    await signOut(auth);
+    dispatch(logoutUser());
+    handleAvatarMenuClose();
+  };
+
+  const handleLogoClick = () => {
+    if (location.pathname === "/") {
+      const heroSection = document.getElementById("hero");
+      if (heroSection) {
+        heroSection.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      navigate("/feed");
+    }
+  };
 
   return (
     <AppBar
@@ -53,7 +59,9 @@ export default function Header({ scrolled }) {
         backdropFilter: "blur(20px)",
         transition: "all 0.4s ease",
         boxShadow: scrolled ? "0 8px 32px rgba(0, 0, 0, 0.3)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(139, 92, 246, 0.2)" : "1px solid rgba(255, 255, 255, 0.1)",
+        borderBottom: scrolled
+          ? "1px solid rgba(139, 92, 246, 0.2)"
+          : "1px solid rgba(255, 255, 255, 0.1)",
         height: "72px",
         zIndex: 1100,
       }}
@@ -87,6 +95,7 @@ export default function Header({ scrolled }) {
           </Box>
           <Typography
             variant="h5"
+            onClick={handleLogoClick}
             sx={{
               fontWeight: 800,
               letterSpacing: "-0.01em",
@@ -103,72 +112,7 @@ export default function Header({ scrolled }) {
           </Typography>
         </Box>
 
-        {/* Mobile Menu */}
-        <Box sx={{ display: { xs: "flex", md: "none" } }}>
-          <IconButton
-            sx={{
-              color: "#F1F5F9",
-              backgroundColor: "rgba(139, 92, 246, 0.1)",
-              border: "1px solid rgba(139, 92, 246, 0.2)",
-              "&:hover": {
-                backgroundColor: "rgba(139, 92, 246, 0.2)",
-                transform: "scale(1.05)",
-              },
-              transition: "all 0.3s ease",
-            }}
-            onClick={handleMenuOpen}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-            PaperProps={{
-              sx: {
-                background: "rgba(30, 41, 59, 0.95)",
-                backdropFilter: "blur(20px)",
-                border: "1px solid rgba(139, 92, 246, 0.2)",
-                borderRadius: "16px",
-                mt: 1,
-              },
-            }}
-          >
-            {!user ? (
-              <>
-                <MenuItem href="#features" onClick={handleMenuClose} sx={{ color: "#F1F5F9" }}>
-                  Discover
-                </MenuItem>
-                <MenuItem href="#pricing" onClick={handleMenuClose} sx={{ color: "#F1F5F9" }}>
-                  Pricing
-                </MenuItem>
-                <MenuItem href="#faq" onClick={handleMenuClose} sx={{ color: "#F1F5F9" }}>
-                  FAQ
-                </MenuItem>
-                <MenuItem href="#hero" onClick={handleMenuClose} sx={{ color: "#F1F5F9" }}>
-                  Sign In
-                </MenuItem>
-              </>
-            ) : (
-              <>
-                <MenuItem disabled sx={{ color: "#8B5CF6" }}>
-                  Hello, {user.displayName || "Movie Lover"}
-                </MenuItem>
-                <MenuItem onClick={handleMenuClose} sx={{ color: "#F1F5F9" }}>
-                  My Watchlist
-                </MenuItem>
-                <MenuItem onClick={handleMenuClose} sx={{ color: "#F1F5F9" }}>
-                  Settings
-                </MenuItem>
-                <MenuItem onClick={handleLogout} sx={{ color: "#F1F5F9" }}>
-                  Logout
-                </MenuItem>
-              </>
-            )}
-          </Menu>
-        </Box>
-
-        {/* Desktop Navigation */}
+        {/* Navigation */}
         <Stack
           direction="row"
           spacing={1}
@@ -179,7 +123,7 @@ export default function Header({ scrolled }) {
             overflow: "hidden",
           }}
         >
-          {!user ? (
+          {!authUser ? (
             <>
               {["Discover", "Trending", "FAQ"].map((label) => (
                 <MUILink
@@ -231,8 +175,8 @@ export default function Header({ scrolled }) {
               <Tooltip title="Account">
                 <IconButton onClick={handleAvatarClick} sx={{ p: 0.5 }}>
                   <Avatar
-                    src="https://i.pravatar.cc/32"
-                    alt={user.displayName || "User"}
+                    src={userInfo?.photoURL || undefined}
+                    alt={userInfo?.name || "User"}
                     sx={{
                       width: 32,
                       height: 32,
@@ -244,7 +188,11 @@ export default function Header({ scrolled }) {
                         boxShadow: "0 4px 16px rgba(139, 92, 246, 0.3)",
                       },
                     }}
-                  />
+                  >
+                    {(!userInfo?.photoURL && userInfo?.name)
+                      ? userInfo.name[0]?.toUpperCase()
+                      : null}
+                  </Avatar>
                 </IconButton>
               </Tooltip>
 
@@ -263,17 +211,15 @@ export default function Header({ scrolled }) {
                   },
                 }}
               >
-                <MenuItem disabled sx={{ color: "#8B5CF6", fontWeight: 600 }}>
+                <MenuItem
+                  onClick={() => {
+                    navigate("/profile");
+                    handleAvatarMenuClose();
+                  }}
+                  sx={{ color: "#8B5CF6", fontWeight: 600 }}
+                >
                   <Person sx={{ mr: 1, fontSize: 18 }} />
-                  {user.displayName || "Movie Lover"}
-                </MenuItem>
-                <MenuItem onClick={handleAvatarMenuClose} sx={{ color: "#F1F5F9" }}>
-                  <Favorite sx={{ mr: 1, fontSize: 18 }} />
-                  My Watchlist
-                </MenuItem>
-                <MenuItem onClick={handleAvatarMenuClose} sx={{ color: "#F1F5F9" }}>
-                  <Settings sx={{ mr: 1, fontSize: 18 }} />
-                  Settings
+                  {userInfo.name || "Movie Lover"}
                 </MenuItem>
                 <MenuItem onClick={handleLogout} sx={{ color: "#F1F5F9" }}>
                   <ExitToApp sx={{ mr: 1, fontSize: 18 }} />
@@ -285,5 +231,5 @@ export default function Header({ scrolled }) {
         </Stack>
       </Toolbar>
     </AppBar>
-  )
+  );
 }

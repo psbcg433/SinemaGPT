@@ -1,4 +1,13 @@
-import { Typography, Grid, Stack, Divider, IconButton, Container, Box, Link } from "@mui/material"
+import {
+  Typography,
+  Grid,
+  Stack,
+  Divider,
+  IconButton,
+  Container,
+  Box,
+  Link,
+} from "@mui/material";
 import {
   Movie,
   Facebook,
@@ -10,7 +19,7 @@ import {
   Email,
   LocationOn,
   Phone,
-} from "@mui/icons-material"
+} from "@mui/icons-material";
 
 const footerLinks = [
   {
@@ -49,16 +58,16 @@ const footerLinks = [
       { name: "Feature Requests", href: "#" },
     ],
   },
-]
+];
 
-const socialLinks = [
-  { icon: <Facebook />, href: "#", label: "Facebook" },
-  { icon: <Twitter />, href: "#", label: "Twitter" },
-  { icon: <Instagram />, href: "#", label: "Instagram" },
-  { icon: <LinkedIn />, href: "#", label: "LinkedIn" },
-  { icon: <GitHub />, href: "#", label: "GitHub" },
-  { icon: <YouTube />, href: "#", label: "YouTube" },
-]
+// const socialLinks = [
+//   { icon: <Facebook />, href: "#", label: "Facebook" },
+//   { icon: <Twitter />, href: "#", label: "Twitter" },
+//   { icon: <Instagram />, href: "#", label: "Instagram" },
+//   { icon: <LinkedIn />, href: "#", label: "LinkedIn" },
+//   { icon: <GitHub />, href: "#", label: "GitHub" },
+//   { icon: <YouTube />, href: "#", label: "YouTube" },
+// ];
 
 export default function Footer() {
   return (
@@ -77,7 +86,8 @@ export default function Footer() {
           left: 0,
           right: 0,
           height: "1px",
-          background: "linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent)",
+          background:
+            "linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent)",
         },
         "&::after": {
           content: '""',
@@ -113,8 +123,12 @@ export default function Footer() {
                     boxShadow: "0 8px 32px rgba(139, 92, 246, 0.3)",
                     animation: "glow 3s ease-in-out infinite",
                     "@keyframes glow": {
-                      "0%, 100%": { boxShadow: "0 8px 32px rgba(139, 92, 246, 0.3)" },
-                      "50%": { boxShadow: "0 8px 32px rgba(139, 92, 246, 0.6)" },
+                      "0%, 100%": {
+                        boxShadow: "0 8px 32px rgba(139, 92, 246, 0.3)",
+                      },
+                      "50%": {
+                        boxShadow: "0 8px 32px rgba(139, 92, 246, 0.6)",
+                      },
                     },
                   }}
                 >
@@ -143,8 +157,9 @@ export default function Footer() {
                   maxWidth: "300px",
                 }}
               >
-                Discover your next favorite movie with AI-powered recommendations. Join millions of movie lovers in the
-                ultimate cinematic journey.
+                Discover your next favorite movie with AI-powered
+                recommendations. Join millions of movie lovers in the ultimate
+                cinematic journey.
               </Typography>
 
               {/* Contact Info */}
@@ -170,29 +185,69 @@ export default function Footer() {
               </Stack>
 
               {/* Social Links */}
-              <Stack direction="row" spacing={1}>
-                {socialLinks.map((social, index) => (
-                  <IconButton
-                    key={index}
-                    href={social.href}
-                    aria-label={social.label}
-                    sx={{
-                      color: "#64748B",
-                      backgroundColor: "rgba(30, 41, 59, 0.5)",
-                      border: "1px solid rgba(139, 92, 246, 0.2)",
-                      "&:hover": {
-                        color: "#8B5CF6",
-                        backgroundColor: "rgba(139, 92, 246, 0.1)",
-                        borderColor: "rgba(139, 92, 246, 0.4)",
-                        transform: "translateY(-2px)",
-                        boxShadow: "0 8px 25px rgba(139, 92, 246, 0.2)",
-                      },
-                      transition: "all 0.3s ease",
-                    }}
-                  >
-                    {social.icon}
-                  </IconButton>
-                ))}
+              <Stack direction="row" spacing={2}>
+                <IconButton
+                  href="https://github.com/psbcg433"
+                  target="_blank"
+                  rel="noopener"
+                  sx={{
+                    color: "#64748B",
+                    backgroundColor: "rgba(30, 41, 59, 0.5)",
+                    border: "1px solid rgba(139, 92, 246, 0.2)",
+                    "&:hover": {
+                      color: "#8B5CF6",
+                      backgroundColor: "rgba(139, 92, 246, 0.1)",
+                      borderColor: "rgba(139, 92, 246, 0.4)",
+                      transform: "translateY(-2px)",
+                      boxShadow: "0 8px 25px rgba(139, 92, 246, 0.2)",
+                    },
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  <GitHub />
+                </IconButton>
+
+                <IconButton
+                  href="https://www.instagram.com/psb_prashnik"
+                  target="_blank"
+                  rel="noopener"
+                  sx={{
+                    color: "#64748B",
+                    backgroundColor: "rgba(30, 41, 59, 0.5)",
+                    border: "1px solid rgba(139, 92, 246, 0.2)",
+                    "&:hover": {
+                      color: "#8B5CF6",
+                      backgroundColor: "rgba(139, 92, 246, 0.1)",
+                      borderColor: "rgba(139, 92, 246, 0.4)",
+                      transform: "translateY(-2px)",
+                      boxShadow: "0 8px 25px rgba(139, 92, 246, 0.2)",
+                    },
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  <Instagram />
+                </IconButton>
+
+                <IconButton
+                  href="https://www.linkedin.com/in/prashnik-das-42b8b12b8/"
+                  target="_blank"
+                  rel="noopener"
+                  sx={{
+                    color: "#64748B",
+                    backgroundColor: "rgba(30, 41, 59, 0.5)",
+                    border: "1px solid rgba(139, 92, 246, 0.2)",
+                    "&:hover": {
+                      color: "#8B5CF6",
+                      backgroundColor: "rgba(139, 92, 246, 0.1)",
+                      borderColor: "rgba(139, 92, 246, 0.4)",
+                      transform: "translateY(-2px)",
+                      boxShadow: "0 8px 25px rgba(139, 92, 246, 0.2)",
+                    },
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  <LinkedIn />
+                </IconButton>
               </Stack>
             </Box>
           </Grid>
@@ -254,7 +309,8 @@ export default function Footer() {
             my: 6,
             borderColor: "rgba(139, 92, 246, 0.2)",
             "&::before": {
-              background: "linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent)",
+              background:
+                "linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent)",
             },
           }}
         />
@@ -270,28 +326,41 @@ export default function Footer() {
           }}
         >
           <Typography variant="body2" sx={{ color: "#64748B" }}>
-            © {new Date().getFullYear()} SinemaGPT. All rights reserved. Made with ❤️ by Prashnik.
+            © {new Date().getFullYear()} SinemaGPT. All rights reserved. Made
+            with ❤️ by Prashnik.
           </Typography>
 
           <Stack direction="row" spacing={3}>
             <Link
               href="#"
               underline="none"
-              sx={{ color: "#64748B", fontSize: "0.875rem", "&:hover": { color: "#8B5CF6" } }}
+              sx={{
+                color: "#64748B",
+                fontSize: "0.875rem",
+                "&:hover": { color: "#8B5CF6" },
+              }}
             >
               Privacy Policy
             </Link>
             <Link
               href="#"
               underline="none"
-              sx={{ color: "#64748B", fontSize: "0.875rem", "&:hover": { color: "#8B5CF6" } }}
+              sx={{
+                color: "#64748B",
+                fontSize: "0.875rem",
+                "&:hover": { color: "#8B5CF6" },
+              }}
             >
               Terms of Service
             </Link>
             <Link
               href="#"
               underline="none"
-              sx={{ color: "#64748B", fontSize: "0.875rem", "&:hover": { color: "#8B5CF6" } }}
+              sx={{
+                color: "#64748B",
+                fontSize: "0.875rem",
+                "&:hover": { color: "#8B5CF6" },
+              }}
             >
               Cookie Policy
             </Link>
@@ -308,7 +377,8 @@ export default function Footer() {
           width: "200px",
           height: "200px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%)",
+          background:
+            "radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%)",
           animation: "float 10s ease-in-out infinite",
           "@keyframes float": {
             "0%, 100%": { transform: "translateY(0px)" },
@@ -317,5 +387,5 @@ export default function Footer() {
         }}
       />
     </Box>
-  )
+  );
 }

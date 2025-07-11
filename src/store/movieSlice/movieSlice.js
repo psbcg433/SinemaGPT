@@ -1,4 +1,4 @@
-// src/redux/movies/movieSlice.js
+// src/store/movieSlice/movieSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import {
   fetchNowPlaying,
@@ -8,35 +8,15 @@ import {
 } from "./movieActions";
 
 const initialState = {
-  nowPlaying: {
-    list: [],
-    loading: false,
-    error: null,
-  },
-  popular: {
-    list: [],
-    loading: false,
-    error: null,
-  },
-  topRated: {
-    list: [],
-    loading: false,
-    error: null,
-  },
-  upcoming: {
-    list: [],
-    loading: false,
-    error: null,
-  },
-  searchResult: {
-    title: "",
-    list: [],
-    loading: false,
-    error: null,
-  },
+  nowPlaying: { list: [], loading: false, error: null },
+  popular: { list: [], loading: false, error: null },
+  topRated: { list: [], loading: false, error: null },
+  upcoming: { list: [], loading: false, error: null },
+  searchResult: { title: "", list: [], loading: false, error: null },
+  suggestions: { list: [], loading: false, error: null },
+  recentSearchSuggestion: { list: [], loading: false, error: null },
 };
 
-// 🔁 Helper function to DRY up thunk handlers
 const handleAsyncCases = (builder, thunk, key) => {
   builder
     .addCase(thunk.pending, (state) => {
@@ -71,12 +51,31 @@ const movieSlice = createSlice({
       state.searchResult.error = action.payload;
     },
     clearSearchResults: (state) => {
-      state.searchResult = {
-        title: "",
-        list: [],
-        loading: false,
-        error: null,
-      };
+      state.searchResult = { title: "", list: [], loading: false, error: null };
+    },
+    setSuggestionsLoading: (state) => {
+      state.suggestions.loading = true;
+      state.suggestions.error = null;
+    },
+    setSuggestionsSuccess: (state, action) => {
+      state.suggestions.loading = false;
+      state.suggestions.list = action.payload;
+    },
+    setSuggestionsError: (state, action) => {
+      state.suggestions.loading = false;
+      state.suggestions.error = action.payload;
+    },
+    setRecentSearchSuggestionLoading: (state) => {
+      state.recentSearchSuggestion.loading = true;
+      state.recentSearchSuggestion.error = null;
+    },
+    setRecentSearchSuggestionSuccess: (state, action) => {
+      state.recentSearchSuggestion.loading = false;
+      state.recentSearchSuggestion.list = action.payload;
+    },
+    setRecentSearchSuggestionError: (state, action) => {
+      state.recentSearchSuggestion.loading = false;
+      state.recentSearchSuggestion.error = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -92,6 +91,12 @@ export const {
   setSearchSuccess,
   setSearchError,
   clearSearchResults,
+  setSuggestionsLoading,
+  setSuggestionsSuccess,
+  setSuggestionsError,
+  setRecentSearchSuggestionLoading,
+  setRecentSearchSuggestionSuccess,
+  setRecentSearchSuggestionError,
 } = movieSlice.actions;
 
 export default movieSlice.reducer;

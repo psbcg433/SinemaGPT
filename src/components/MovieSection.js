@@ -46,11 +46,11 @@ const MovieSection = ({ title, movies = [], loading, error }) => {
   };
 
   return (
-    <Box sx={{ mb: 6, position: "relative", py: 2 }}
-         onMouseEnter={() => setShowNavButtons(true)}
-         onMouseLeave={() => setShowNavButtons(false)}>
-      
-      {/* Scroll Buttons */}
+    <Box
+      sx={{ mb: 6, position: "relative", py: 2 }}
+      onMouseEnter={() => setShowNavButtons(true)}
+      onMouseLeave={() => setShowNavButtons(false)}
+    >
       {!isMobile && showNavButtons && canScrollLeft && (
         <IconButton onClick={() => scroll("left")} sx={scrollButtonStyle(theme, isDark, "left")}>
           <ChevronLeft fontSize="medium" />
@@ -92,7 +92,6 @@ const MovieSection = ({ title, movies = [], loading, error }) => {
             overflowX: "hidden",
           }}
         >
-          {/* Scrollable area */}
           <Box
             ref={containerRef}
             sx={{
@@ -111,7 +110,6 @@ const MovieSection = ({ title, movies = [], loading, error }) => {
               position: "relative",
             }}
           >
-            {/* ⏳ Loading Shimmer */}
             {loading &&
               [...Array(5)].map((_, idx) => (
                 <Box key={idx} sx={{ flexShrink: 0 }}>
@@ -119,14 +117,12 @@ const MovieSection = ({ title, movies = [], loading, error }) => {
                 </Box>
               ))}
 
-            {/* ❌ Error Message */}
             {!loading && error && (
               <Box sx={{ minWidth: "100%" }}>
                 <Alert severity="error">{error}</Alert>
               </Box>
             )}
 
-            {/* 🎬 Movie List */}
             {!loading && !error && movies.length > 0 &&
               movies.map((movie) => (
                 <Box key={movie.id || movie.title} sx={{ flexShrink: 0 }}>
@@ -134,7 +130,6 @@ const MovieSection = ({ title, movies = [], loading, error }) => {
                 </Box>
               ))}
 
-            {/* 💤 Empty Result Fallback */}
             {!loading && !error && movies.length === 0 && (
               <Box sx={{ minWidth: "100%" }}>
                 <Alert severity="info">No movies available in this section.</Alert>
@@ -149,7 +144,6 @@ const MovieSection = ({ title, movies = [], loading, error }) => {
 
 export default MovieSection;
 
-// ⬇️ Utility function for scroll button styles
 const scrollButtonStyle = (theme, isDark, position) => ({
   position: "absolute",
   [position]: 8,
