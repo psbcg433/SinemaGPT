@@ -2,9 +2,9 @@
 
 > **AI-powered movie discovery platform** powered by React, Redux, Firebase, GPT, and TMDB.
 
-![Login Page](/FeedPageScreenshot.png)
-![Feed Page](/LoginPageScreenshot.png)
-![Trending Movies](/TrendingMoviesScreenshot.png)
+![Login Page](/public/FeedPageScreenshot.png)
+![Feed Page](/public/LoginPageScreenshot.png)
+![Trending Movies](/public/TrendingMoviesScreenshot.png)
 
 
 ---
